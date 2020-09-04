@@ -150,6 +150,11 @@ STATIC_URL = '/static/'
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+"""
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "network/media")
+"""
+
 # PROD:
 
 # Heroku: Update database configuration from $DATABASE_URL.

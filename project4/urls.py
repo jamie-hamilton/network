@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from django.views.generic import RedirectView
 
 # Use static() to add url mapping to serve static files
 # Development only
@@ -24,6 +23,5 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("network/", include("network.urls")),
-    path('', RedirectView.as_view(url='network/', permanent=True)),
+    path("", include("network.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
