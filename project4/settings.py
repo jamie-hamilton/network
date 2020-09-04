@@ -30,8 +30,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '13kl@xtukpwe&xj2xoysxe9_6=tf@f
 # environment variable set to False with $export DJANGO_DEBUG=False
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['web50network.herokuapp.com','127.0.0.1']
 
 # Application definition
 
