@@ -1,0 +1,13 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+    {% for post in page_obj %}
+        {% include 'network/partials/post.html' %}
+    {% endfor %}
+        {% include 'network/partials/paginator.html' %}
+{% endblock %}
+{% block script %}
+    <script src="{% static 'network/post.js' %}"></script>
+{% endblock %}

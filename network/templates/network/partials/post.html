@@ -1,0 +1,65 @@
+<div class="row post-row">
+    <a class="post-img-link" href="{% url 'profile' post.user.username %}">
+    <div class="col-auto img-container">
+    {% if not post.user.profile_image %}
+        <h3 class="post-img" style="margin-left: auto;">@{{ post.user.username.0 }}</h3>
+    {% else %}
+        <img class="post-img" src="{{ post.user.profile_image.url }}"/>
+    {% endif %}
+    </div>
+    </a>
+    <div class="col-8 post">
+        <a href="{% url 'profile' post.user.username %}"><h5>@{{ post.user.username }}</a> shouted:</h5>
+        <h4 class="post-text">{{ post.post }}</h4>
+        {% if post.user_id == request.user.id %}
+        <div class="post-edit">
+            <button class="btn btn-edit"><i class="fas fa-pencil-alt"></i></button>
+        </div>
+        <form class="edit-form" method="PUT">
+            {% csrf_token %}
+            <div class="form-group">
+                <input class="form-control" type="hidden" name="profile_id" value="{{ request.user.id }}">
+                <input class="form-control" type="hidden" name="post_id" value="{{ post.id }}" >
+                <textarea class="form-control post-field" name="edited" rows="2"></textarea>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-save" type="submit"><i class="far fa-check-circle"></i></button>
+                <button class="btn btn-cancel" type="button"><i class="far fa-times-circle"></i></button>
+            </div>
+        </form>
+        {% endif %}
+        <p class="date text-muted">{{ post.date|time:"H:i" }} on {{ post.date|date:"d/m/y" }}
+            <small class="date-edited text-muted">
+                {% if post.edited %}
+                - Edited at {{ post.edited|time:"H:i" }} on {{ post.edited|date:"d/m/y" }}
+                {% endif %}
+            </small>
+        </p>
+    </div>
+</div>
+
+<div class="row like-row">
+    <div class="col-auto">
+        <div style="min-width: 80px;"></div>
+    </div>
+    <div class="col-8 like">
+        {% if user.is_authenticated %}
+        <form class="like-form" method="POST">
+            {% csrf_token %}
+            <div>
+                <input type="hidden" name="user_id" value="{{ request.user.id }}">
+                <input type="hidden" name="post_id" value="{{ post.id }}" >
+                <input type="hidden" name="count" value="{{ post.likes.all | length }}" />
+            </div>
+            <div>
+                <input type=hidden name="liked" value="{% if post.likes.all %}{% for like in post.likes.all %}{% if request.user.id == like.user.id %}hot{% endif %}{% endfor %}{% endif %}" />
+            </div>
+            <div class="likes-container">
+                <button class="btn btn-like" type="submit"><i class="fas fa-pepper-hot not-hot"></i></button>
+                <p class="small like-count" id="like-count-{{ post.id }}"></p>
+            </div>  
+        </form>
+        {% endif %}
+        <hr>
+    </div>
+</div>

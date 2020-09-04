@@ -1,0 +1,90 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+<div class="row">
+    {% if profile_user.id == request.user.id %}
+    <a class="post-img-link" id="main-profile-img" href="#">
+        <div class="col-auto img-container">
+        {% if not profile_user.profile_image %}
+            <h3 class="post-img" style="margin-left: auto;">@{{ profile_user.username.0 }}</h3>
+        {% else %}
+            <img class="post-img" src="{{ profile_user.profile_image.url }}"/>
+        {% endif %}
+            <i class="hovered fas fa-user-edit"></i>
+        </div>
+    </a>
+    {% else %}
+    <a class="post-img-link" href="{% url 'profile' profile_user.username %}">
+        <div class="col-auto img-container">
+        {% if not profile_user.profile_image %}
+            <h3 class="post-img" style="margin-left: auto;">@{{ profile_user.username.0 }}</h3>
+        {% else %}
+            <img class="post-img" src="{{ profile_user.profile_image.url }}"/>
+        {% endif %}
+        </div>
+    </a>
+    {% endif %}
+    <div class="d-flex align-items-center col-auto">
+        <h2>{{profile_user.username}}'s Profile</h2>
+    </div>
+    <div class="d-flex align-items-center col-auto">
+        <form id="connect" method="PUT">
+            {% csrf_token %}
+            <input type="hidden" name="profile" id="profile_user" value="{{ profile_user.id }}">
+            {% if profile_user.id != request.user.id %}
+            <input class="btn btn-primary" type="submit" name="call" id="follow" value="">
+            {% endif %}
+        </form>
+    </div>
+</div>
+{% if profile_user.id == request.user.id %}
+<div class="row image-upload">
+    <div class="col-lg-6">
+        <form class="form-inline" action="/upload/{{ profile_user.username }}" method="POST" enctype='multipart/form-data'>
+        {% csrf_token %}
+        <div class="form-group mb-2">
+            <input type="hidden" name="id" id="profile_user" value="{{ request.user.id }}">
+            {{ photo_form }}
+            <label for="image-file" class="custom-file-upload">
+                <span id="file-selected">Browse Files...</span>
+            </label>
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">Upload</button>
+        </form>
+    </div>
+</div>
+{% endif %}  
+<div class="row">
+    <div class="col-auto">
+        <p>Following: <span id="following"></p>
+    </div>
+    <div class="col-auto">
+        <p>Followers: <span id="followers"></span></p>
+    </div>
+    <div class="col-12">
+        <hr>
+    </div>
+</div>
+{% for post in page_obj %}
+    {% include 'network/partials/post.html' %}
+{% endfor %}
+    {% include 'network/partials/paginator.html' %}
+{% endblock %}
+{% block script %}
+    <script src="{% static 'network/connect.js' %}"></script>
+    <script src="{% static 'network/post.js' %}"></script>
+    {% if request.user.id == profile_user.id %}
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('#main-profile-img').onclick = (e) => {
+                document.querySelector('.image-upload').style.display = 'block';
+            };
+            document.querySelector('#image-file').addEventListener('change', function(){
+            filename = this.files[0].name
+            document.querySelector('#file-selected').textContent = filename;
+            });
+        });
+    </script>
+    {% endif %}
+{% endblock %}

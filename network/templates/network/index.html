@@ -1,0 +1,21 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+    {% if user.is_authenticated %}
+    <div class="row">
+        {% include 'network/forms/post_form.html' %}
+    </div>
+    {% endif %}
+
+    {% for post in page_obj %}
+        {% include 'network/partials/post.html' %}
+    {% endfor %}
+        {% include 'network/partials/paginator.html' %}
+{% endblock %}
+{% block script %}
+    {% if user.is_authenticated %}
+    <script src="{% static 'network/post.js' %}"></script>
+    {% endif %}
+{% endblock %}
