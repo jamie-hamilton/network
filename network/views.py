@@ -112,7 +112,7 @@ def edit(request, user_id, post_id):
             "message": "Post updated!", 
             "post": post.post, 
             "date_edited": post.edited.strftime(" - Edited at %H:%M on %d/%m/%y")
-        }, status=204)
+        }, status=201)
 
 
 @login_required(login_url="login")
@@ -142,7 +142,7 @@ def like(request, post_id):
                 like.delete()
 
                 # Successully deleted:
-                return JsonResponse({"message": "Post cooled"}, status=204)
+                return JsonResponse({"message": "Post cooled"}, status=201)
 
             except Like.DoesNotExist:
                 # create like
@@ -191,7 +191,7 @@ def connect(request, profile_user):
             }, status=400)
 
         # Successful response
-        return JsonResponse({"message": "Follow/unfollow request successful!"}, status=204)
+        return JsonResponse({"message": "Follow/unfollow request successful!"}, status=201)
 
     else:
         # Bad request error if wrong request received
