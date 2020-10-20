@@ -8,18 +8,19 @@ __tl;dr:__
 - see the finished project [here](https://web50network.herokuapp.com/) (it'll take a few seconds to get going as it is on a hobby server)
 
 - favourite code snippet:
-```Python
-  try:
-      # if like exists user must've unliked
-      like = Like.objects.get(post=post, user=user.id)
-      like.delete()
-      
-      # brutal
-      return JsonResponse({"message": "Post cooled"}, status=201)
-
-  except Like.DoesNotExist:
-      # nice moment
-      like = Like.objects.create(post=post, user=user)
+```JavaScript
+  // Semi-transparent navbar onscroll
+  var mainNav = document.getElementById('mainnav');
+        window.onscroll = function () { 
+            if (document.body.scrollTop >= 100 || document.documentElement.scrollTop >= 100) {
+                mainNav.classList.add("navbar-border-transparent");
+                mainNav.classList.remove("navbar-border-solid");
+            } 
+            else {
+                mainNav.classList.add("navbar-border-solid");
+                mainNav.classList.remove("navbar-border-transparent");
+            }
+        };
 ```
 - what it looks like:
 
